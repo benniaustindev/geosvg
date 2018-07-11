@@ -3,13 +3,18 @@
   <head>
     <title>Geosvg test page</title>
     <meta charset="utf-8" />
-    <script type="text/javascript" src="../lib/geodesy/latlon-spherical.js"></script>
-    <script type="text/javascript" src="../lib/usng/usng.js"></script>
+    <script type="text/javascript" src="js/latlon-spherical.js"></script>
+    <script type="text/javascript" src="js/usng.js"></script>
     <script type="text/javascript" src="js/geosvg.js"></script>
+    <script type="text/javascript" src="js/geosvg.panzoom.js"></script>
     <script type="text/javascript" src="js/index.js"></script>
-    <link type="text/css" href="css/styles.css" />
+    <link type="text/css" rel="stylesheet" href="css/styles.css" />
   </head>
   <body>
-    <svg id="geosvg"></svg>
+    <svg id="geosvg" viewBox="-100 0 500 500">
+      <svg id="subsvg" viewBox="0 0 200 200" x="100px" y="100px" width="200px" height="200px">
+        <rect x="-50" y="-50" width="100px" height="100px" class="shape"></rect>
+      </svg>
+    </svg>
   </body>
 </html>
