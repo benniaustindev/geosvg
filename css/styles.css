@@ -10,13 +10,14 @@ body {
   left:0;
   width:100%;
   height:100%;
-  background:red;
 }
 svg svg {
   overflow:visible;
 }
-rect.shape {
-  fill:green;
+rect.utmZone {
+  fill:#eee;
+  stroke-width:1;
+  stroke:1
 }
 rect.bg {
   fill:blue;

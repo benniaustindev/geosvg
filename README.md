@@ -52,6 +52,14 @@ returns the current latitude or longitude at the center of the current view
 
 set to a decimal latitude or longitude, and the viewport will be updated
 
+### geosvg.scale [getter]
+
+returns the current conversion ratio from pixels to meters
+
+### geosvg.scale [setter]
+
+set the the number of meters you with 1 pixel to represent
+
 
 ### geosvg.width, geosvg.height [getter only]
 
