@@ -5,7 +5,7 @@
 ## Dependancies
 
  * **latlon-spherical.js** from https://github.com/chrisveness/geodesy
- * **Loki.js.js** from https://github.com/techfort/LokiJS
+ * **Lokijs.js** from https://github.com/techfort/LokiJS
 
 ## quickstart
 assuming this HTML:

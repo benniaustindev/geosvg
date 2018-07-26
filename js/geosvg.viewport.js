@@ -4,7 +4,7 @@
   const removeAssets=function(){
     Array.from(this.element.children).forEach((img)=>{
       if(img.getAttribute('north')<this.south || img.getAttribute('south')>this.north || img.getAttribute('west')>this.east || img.getAttribute('east')<this.west){
-        img.parentElement.removeChild(asset);
+        img.parentElement.removeChild(img);
       }
     });
   };
@@ -48,8 +48,8 @@
       get:function(){
         return properties.scale;
       },
-      set:function(value){
-        return properties.scale=scale;
+      set:function(scale){
+        properties.scale=scale;
         this.fixViewBox();
       }
     },
@@ -57,8 +57,8 @@
       get:function(){
         return properties.lat;
       },
-      set:function(value){
-        return properties.lat=lat*1;
+      set:function(lat){
+        properties.lat=lat*1;
         this.fixViewBox();
       }
     },
@@ -66,8 +66,8 @@
       get:function(){
         return properties.lon
       },
-      set:function(value){
-        return properties.lon=lon*1;
+      set:function(lon){
+        properties.lon=lon*1;
         this.fixViewBox();
       }
     },
