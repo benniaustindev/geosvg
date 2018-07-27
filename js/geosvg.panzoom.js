@@ -33,9 +33,9 @@
         event.preventDefault();
         let pxAngle=Math.planeAngle((this.element.clientWidth/2),(this.element.clientHeight/2),event.layerX,event.layerY);
         let pxDistance=Math.planeDistance((this.element.clientWidth/2),(this.element.clientHeight/2),event.layerX,event.layerY);
-        let mousePoint=this.center.destinationPoint(pxDistance*this.scale,pxAngle);
+        let mousePoint=this.center.destinationPoint(pxDistance*this.scale,pxAngle-180);
         let newScale=(event.deltaY>0)?Math.round((this.scale/9*10)*100)/100:Math.round((this.scale*.9)*100)/100;
-        let newCenter=mousePoint.destinationPoint(pxDistance*newScale,pxAngle-180)
+        let newCenter=mousePoint.destinationPoint(pxDistance*newScale,pxAngle)
         this.viewPort = {
           scale:newScale,
           lat:newCenter.lat,

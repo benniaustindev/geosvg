@@ -4,21 +4,65 @@ body {
   height:100%;
   margin:0;
 }
-#geosvg {
+#sidebar {
+  position:absolute;
+  top:3rem;
+  left:0;
+  bottom:0;
+  width:20rem;
+  background:#eee;
+  transition:all 300ms;
+}
+#sidebar[hidden]{
+  transform:translateX(-100%);
+  display:flex;
+}
+#sidebar[hidden] ~ #main{
+  left:0;
+}
+#toolbar {
   position:absolute;
   top:0;
   left:0;
-  width:100%;
-  height:100%;
+  right:0;
+  height:3rem;
+  display:flex;
+  background:#999
 }
-svg svg {
-  overflow:visible;
+#toolbar button {
+  outline:0;
+  flex-grow:0;
+  height:3rem;
+  line-height:3rem;
+  text-align:center;
+  min-width:3rem;
+  border:0;
+  background-color:transparent;
 }
-rect.utmZone {
-  fill:#eee;
-  stroke-width:1;
-  stroke:1
+#toolbar button.active {
+  background:#eee;
 }
-rect.bg {
-  fill:blue;
+#toolbar .sidebar {
+  display:flex;
+  width:9rem;
+  transition:all 200ms;
+  transition-delay:0ms;
+}
+#sidebar:not([hidden]) ~ #toolbar .sidebar {
+  width:20rem;
+  transition-delay:100ms;
+}
+#toolbar .sidebar button  {
+  flex-grow:1;
+}
+#main {
+  transition:all 300ms;
+  position:absolute;
+  top:3rem;
+  left:20rem;
+  right:0;
+  bottom:0;
+
+}
+#geosvg {
 }

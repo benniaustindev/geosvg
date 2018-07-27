@@ -38,7 +38,9 @@
   class GeoSvg {
     constructor(element){
       this.db=new loki('loki.json');
-      this.assets=this.db.addCollection('assets');
+      this.collections={
+        assets:this.db.addCollection('assets')
+      }
       this.element=properties.element=element;
       window.addEventListener('resize',()=>this.fixViewBox);
       while(initializers.length){
@@ -47,7 +49,26 @@
       }
 
     }
+    showCollection(collectionName){
+      if(!this.collections[collectionName].visible){
+        this.collections[collectionName].visible=true;
+        if(!this.element.querySelector('data-collection',collectionName)){
+          let group=document.createSVGElement('g');
+          group.setAttribute('data-collection',collectionName)
+          this.element.appendChild(group);
+        }
+      }
 
+      this.fixViewBox();
+    }
+    hideCollection(collectionName){
+      if(this.collections[collectionName].visible)this.collections[collectionName].visible=false;
+      let group=this.element.querySelector('data-collection',collectionName)
+      if(!group){
+        this.element.removeChild(group);
+      }
+      this.fixViewBox();
+    }
 
 
   }

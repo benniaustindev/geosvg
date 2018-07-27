@@ -10,17 +10,23 @@
     });
   };
   const loadAssets=function(){
-    this.assets.find({
-      '$and':[
-        {'north':{'$gt':this.center.destinationPoint(this.height*1.5,180).lat}},
-        {'south':{'$lt':this.center.destinationPoint(this.height*1.5,0).lat}},
-        {'west':{'$lt':this.center.destinationPoint(this.width*1.5,90).lon}},
-        {'east':{'$gt':this.center.destinationPoint(this.width*1.5,270).lon}},
-      ]
-    }).forEach(asset=>this.placeAsset(asset));
+    for(var collectionName in this.collections){
+      if(this.collections[collectionName].visible){
+        this.collections[collectionName].find({
+          '$and':[
+            {'north':{'$gt':this.center.destinationPoint(this.height*1.5,180).lat}},
+            {'south':{'$lt':this.center.destinationPoint(this.height*1.5,0).lat}},
+            {'west':{'$lt':this.center.destinationPoint(this.width*1.5,90).lon}},
+            {'east':{'$gt':this.center.destinationPoint(this.width*1.5,270).lon}},
+          ]
+        }).forEach(asset=>this.placeAsset(asset));
+      }
+    }
     removeAssets.call(this);
   };
+  const createAssetElement=function(asset){
 
+  }
   const viewPort={
     fixViewBox(){
       let {north,west,width,height,lat,lon} = this.viewPort;
@@ -29,19 +35,23 @@
       loadAssets.call(this);
     },
     placeAsset(asset){
-      let img= this.element.querySelector('image[href="'+asset.href+'"]'),
-          nw=new LatLon(asset.north,asset.west),
-          size=nw.planeDifference(new LatLon(asset.south,asset.east)),
-          position=this.center.planeDifference(nw);
-      if(!img){
-        img=document.createSVGElement('image');
-        ['href','north','south','west','east'].forEach(prop =>  img.setAttribute(prop,asset[prop]));
-        this.element.appendChild(img);
+      let collectionName=asset.collection||'assets';
+      let element=this.element.querySelector('g[data-collection="'+asset.collection+'"]')
+      if(element){
+        let img= this.element.querySelector('image[href="'+asset.href+'"]'),
+        nw=new LatLon(asset.north,asset.west),
+        size=nw.planeDifference(new LatLon(asset.south,asset.east)),
+        position=this.center.planeDifference(nw);
+        if(!img){
+          img=document.createSVGElement('image');
+          ['href','north','south','west','east'].forEach(prop =>  img.setAttribute(prop,asset[prop]));
+          element.appendChild(img);
+        }
+        img.setAttribute('width',size.x);
+        img.setAttribute('height',size.y);
+        img.setAttribute('x',position.x);
+        img.setAttribute('y',position.y);
       }
-      img.setAttribute('width',size.x);
-      img.setAttribute('height',size.y);
-      img.setAttribute('x',position.x);
-      img.setAttribute('y',position.y);
     }
   }
 
