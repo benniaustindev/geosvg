@@ -12,8 +12,8 @@
       }
       const mousemove=(event)=>{
         moveEvent=event;
-        let x=(this.width*-.5)+(originX-event.screenX)*this.scale,
-            y=(this.height*-.5)+(originY-event.screenY)*this.scale;
+        let x=Math.round(((this.width*-.5)+(originX-event.screenX)*this.scale)*100)/100,
+            y=Math.round(((this.height*-.5)+(originY-event.screenY)*this.scale)*100)/100;
         this.element.setAttribute('viewBox',[x,y,this.width,this.height].join(' '));
       }
       const mouseup=(event)=>{

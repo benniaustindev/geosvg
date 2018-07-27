@@ -29,7 +29,7 @@
   }
   const viewPort={
     fixViewBox(){
-      let {north,west,width,height,lat,lon} = this.viewPort;
+      let {width,height,lat,lon} = this.viewPort;
       this.center=new LatLon(lat,lon);
       this.element.setAttribute('viewBox',[width*-.5,height*-.5,width,height].join(' '));
       loadAssets.call(this);
@@ -98,12 +98,12 @@
     },
     'width':{
       get:function(){
-        return this.element.clientWidth*this.scale;
+        return Math.round(this.element.clientWidth*this.scale*100)/100;
       }
     },
     'height':{
       get:function(){
-        return this.element.clientHeight*this.scale;
+        return Math.round(this.element.clientHeight*this.scale*100)/100;
       }
     },
     'north':{
