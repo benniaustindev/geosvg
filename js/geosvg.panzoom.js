@@ -21,19 +21,29 @@
         this.element.removeEventListener('mouseup',mouseup);
         this.element.removeEventListener('mousemove',mousemove);
         document.removeEventListener('mouseenter',mouseenter);
-        let diffX=(originX-event.screenX)*this.scale,
-            diffY=(originY-event.screenY)*this.scale,
-            distance=Math.sqrt(Math.pow(diffX,2)+Math.pow(diffY,2)),
-            angle=(Math.atan2(diffY,diffX)*(180 / Math.PI))+90;
-        this.viewPort=new LatLon(this.lat,this.lon).destinationPoint(distance,angle);
+
+        let distance = Math.planeDistance(originX,originY,event.screenX,event.screenY)*this.scale,
+            angle = Math.planeAngle(originX,originY,event.screenX,event.screenY);
+        this.viewPort=this.center.destinationPoint(distance,angle);
       }
       const mouseenter=(event)=> {
-        console.log(moveEvent)
         if(event.which!==1) mouseup(moveEvent);
       }
-
-
+      const mousewheel=(event)=>{
+        event.preventDefault();
+        let pxAngle=Math.planeAngle((this.element.clientWidth/2),(this.element.clientHeight/2),event.layerX,event.layerY);
+        let pxDistance=Math.planeDistance((this.element.clientWidth/2),(this.element.clientHeight/2),event.layerX,event.layerY);
+        let mousePoint=this.center.destinationPoint(pxDistance*this.scale,pxAngle);
+        let newScale=(event.deltaY>0)?Math.round((this.scale/9*10)*100)/100:Math.round((this.scale*.9)*100)/100;
+        let newCenter=mousePoint.destinationPoint(pxDistance*newScale,pxAngle-180)
+        this.viewPort = {
+          scale:newScale,
+          lat:newCenter.lat,
+          lon:newCenter.lon,
+        }
+      }
       this.element.addEventListener('mousedown',mousedown);
+      this.element.addEventListener('mousewheel',mousewheel);
     },
   };
   GeoSvg.extend(panzoom);

@@ -31,7 +31,7 @@ document.addEventListener('DOMContentLoaded',function(){
   console.log(lat)
   console.log(lon)
   geosvg.viewPort={
-    scale:.25 , //1 px=scale meters
+    scale:1 , //1 px=scale meters
     lat:lats.reduce((a,b)=> a+b)/lats.length,
     lon:lons.reduce((a,b)=> a+b)/lons.length,
   }

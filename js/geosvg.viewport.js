@@ -1,9 +1,10 @@
 (function(){
+  const loadBox={}
 
   const properties={};
   const removeAssets=function(){
     Array.from(this.element.children).forEach((img)=>{
-      if(img.getAttribute('north')<this.south || img.getAttribute('south')>this.north || img.getAttribute('west')>this.east || img.getAttribute('east')<this.west){
+      if(img.getAttribute('north')<loadBox.south || img.getAttribute('south')>loadBox.north || img.getAttribute('west')>loadBox.east || img.getAttribute('east')<loadBox.west){
         img.parentElement.removeChild(img);
       }
     });
@@ -11,16 +12,27 @@
   const loadAssets=function(){
     this.assets.find({
       '$and':[
-        {'north':{'$gt':this.south}},
-        {'south':{'$lt':this.north}},
-        {'west':{'$lt':this.east}},
-        {'east':{'$gt':this.west}},
+        {'north':{'$gt':this.center.destinationPoint(this.height*1.5,180).lat}},
+        {'south':{'$lt':this.center.destinationPoint(this.height*1.5,0).lat}},
+        {'west':{'$lt':this.center.destinationPoint(this.width*1.5,90).lon}},
+        {'east':{'$gt':this.center.destinationPoint(this.width*1.5,270).lon}},
       ]
-    }).forEach((asset)=>{
+    }).forEach(asset=>this.placeAsset(asset));
+    removeAssets.call(this);
+  };
+
+  const viewPort={
+    fixViewBox(){
+      let {north,west,width,height,lat,lon} = this.viewPort;
+      this.center=new LatLon(lat,lon);
+      this.element.setAttribute('viewBox',[width*-.5,height*-.5,width,height].join(' '));
+      loadAssets.call(this);
+    },
+    placeAsset(asset){
       let img= this.element.querySelector('image[href="'+asset.href+'"]'),
           nw=new LatLon(asset.north,asset.west),
           size=nw.planeDifference(new LatLon(asset.south,asset.east)),
-          position=new LatLon(this.lat,this.lon).planeDifference(nw);
+          position=this.center.planeDifference(nw);
       if(!img){
         img=document.createSVGElement('image');
         ['href','north','south','west','east'].forEach(prop =>  img.setAttribute(prop,asset[prop]));
@@ -30,16 +42,6 @@
       img.setAttribute('height',size.y);
       img.setAttribute('x',position.x);
       img.setAttribute('y',position.y);
-    });
-    removeAssets.call(this);
-  };
-
-  const viewPort={
-    fixViewBox(){
-      //get the center coord
-      let {north,west,width,height,lat,lon} = this.viewPort;
-      this.element.setAttribute('viewBox',[width*-.5,height*-.5,width,height].join(' '));
-      loadAssets.call(this);
     }
   }
 
@@ -96,22 +98,22 @@
     },
     'north':{
       get:function(){
-        return new LatLon(this.lat,this.lon).destinationPoint(this.height*1.5,0).lat;
+        return new LatLon(this.lat,this.lon).destinationPoint(this.height*.5,0).lat;
       }
     },
     'south':{
       get:function(){
-        return new LatLon(this.lat,this.lon).destinationPoint(this.height*1.5,180).lat;
+        return new LatLon(this.lat,this.lon).destinationPoint(this.height*.5,180).lat;
       }
     },
     'west':{
       get:function(){
-        return new LatLon(this.lat,this.lon).destinationPoint(this.width*1.5,270).lon;
+        return new LatLon(this.lat,this.lon).destinationPoint(this.width*.5,270).lon;
       }
     },
     'east':{
       get:function(){
-        return new LatLon(this.lat,this.lon).destinationPoint(this.width*1.5,90).lon;
+        return new LatLon(this.lat,this.lon).destinationPoint(this.width*.5,90).lon;
       }
     }
   });

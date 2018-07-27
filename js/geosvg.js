@@ -14,11 +14,16 @@
     return new LatLon(this.lat,this.lon).destinationPoint(Math.abs(x),xBearing).destinationPoint(Math.abs(y),yBearing);
 
   }
-
+  Math.planeDistance=function(x1,y1,x2,y2){
+    return Math.sqrt(Math.pow(x1-x2,2)+Math.pow(y1-y2,2));
+  }
+  Math.planeAngle=function(x1,y1,x2,y2){
+    let angle = (Math.atan2(y2-y1,x2-x1)*(180 / Math.PI))+90;
+    while(angle<0)angle+=360;
+    return angle
+  }
   document.createSVGElement=function(type){
     return document.createElementNS('http://www.w3.org/2000/svg',type);
-
-    return elem;
   }
 
 

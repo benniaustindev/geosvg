@@ -67,7 +67,7 @@ returns the width or height of the current visible area in meters
 
 ### geosvg.north, geosvg.south, geosvg.west, geosvg.east [getter only]
 
-returns the edge of the viewport, as it extends past the actual visible area
+returns the edge of the viewport as either a latitude or longitude
 
 ## Import image
 
