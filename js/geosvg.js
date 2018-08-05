@@ -33,63 +33,95 @@
     lon:0,
 
   };
+  events=new Map();
+  class GeoSvgEvent {
+    constructor(eventName,eventInit){
+      Object.assign(this,{
+        type:eventName,
+        timeStamp:performance.now(),
+        bubbles:true,
+        cancelable:true,
+        srcElement:null,
+      },eventInit);
 
+    }
+    stopPropegation(){
 
+    }
+  }
   class GeoSvg {
     constructor(element){
       this.db=new loki('loki.json');
-      this.collections={
-        assets:this.db.addCollection('assets')
-      }
+      this.assets=this.db.addCollection('assets');
+      this.activeLayer='assets.Saint Paul';
       this.element=properties.element=element;
       window.addEventListener('resize',()=>this.fixViewBox);
       while(initializers.length){
         let initializer=initializers.shift();
         initializer.call(this);
       }
-
+      if(document.readyState=='compete'){
+        this.dispatchEvent('ready');
+        this.readyState='complete';
+      }
+      else {
+        document.addEventListener('DOMContentLoaded',event=>{
+          this.dispatchEvent('ready');
+          this.readyState='complete';
+        });
+      }
     }
-    showCollection(collectionName){
-      if(!this.collections[collectionName].visible){
-        this.collections[collectionName].visible=true;
-        if(!this.element.querySelector('data-collection',collectionName)){
-          let group=document.createSVGElement('g');
-          group.setAttribute('data-collection',collectionName)
-          this.element.appendChild(group);
+    addEventListener(eventName,method){
+      if(!events.has(eventName))events.set(eventName,[]);
+      events.get(eventName).push(method);
+      if(eventName === 'ready' && this.readystate === 'complete'){
+        this.dispatchEvent(eventName)
+      }
+    }
+    removeEventListener(){}
+    dispatchEvent(eventName,obj){
+      let event;
+      if(eventName instanceof GeoSvgEvent){
+        event=eventName;
+        eventName=event.type;
+      }
+      if(events.has(eventName)){
+        if(typeof event === 'undefined'){
+          const eventProperties=Object.assign({
+            currentTarget:this,
+            target:this,
+            path:[this],
+          },obj);
+          event=new GeoSvgEvent(eventName,eventProperties);
+        }
+        events.get(eventName).forEach((eventMethod)=>{
+          eventMethod(event);
+        });
+        if(eventName==='ready'){
+          events.set(eventName,[])
         }
       }
 
-      this.fixViewBox();
     }
-    hideCollection(collectionName){
-      if(this.collections[collectionName].visible)this.collections[collectionName].visible=false;
-      let group=this.element.querySelector('data-collection',collectionName)
-      if(!group){
-        this.element.removeChild(group);
-      }
-      this.fixViewBox();
-    }
-
 
   }
   GeoSvg.extend=function(obj){
+    let proto=Object.getPrototypeOf(this);
+
     if(typeof obj.constructor === 'function'){
       initializers.push(obj.constructor);
       delete obj.constructor;
     }
     Object.getOwnPropertyNames(obj).forEach((propName)=>{
       let newDescriptor=Object.getOwnPropertyDescriptor(obj,propName);
-      let oldDescriptor=Object.getOwnPropertyDescriptor(GeoSvg.prototype,propName);
+      let oldDescriptor=Object.getOwnPropertyDescriptor(this.prototype,propName);
       if(newDescriptor && oldDescriptor){
-
         if(newDescriptor.value){
-          if(GeoSvg.prototype[propName]){
-            GeoSvg.prototype[propName]=function(){
-              oldDescriptor.value.apply(this,arguments);
-              newDescriptor.value.apply(this,arguments);
-            }
-
+          this.prototype[propName]=function(){
+            oldDescriptor.value.apply(this,arguments);
+            newDescriptor.value.apply(this,arguments);
           }
+
         }
         else {
           if(newDescriptor.set && oldDescriptor.set){
@@ -108,9 +140,9 @@
 
         }
       }
-
-      Object.defineProperty(this.prototype,propName,newDescriptor);
+      else Object.defineProperty(this.prototype,propName,newDescriptor);
     });
   }
   window.GeoSvg=GeoSvg;
+  window.GeoSvgEvent=GeoSvgEvent;
 })();

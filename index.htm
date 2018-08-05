@@ -5,32 +5,64 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link type="text/css" rel="stylesheet" href="css/ui.css" />
     <link type="text/css" rel="stylesheet" href="css/styles.css" />
+    <script type="text/javascript" src="js/ui.js"></script>
     <script type="text/javascript" src="assets/filenames.js"></script>
     <script type="text/javascript" src="js/latlon-spherical.js"></script>
     <script type="text/javascript" src="js/loki.js"></script>
     <script type="text/javascript" src="js/geosvg.js"></script>
-    <script type="text/javascript" src="js/ui.js"></script>
-    <script type="text/javascript" src="js/geosvg.viewport.js"></script>
-    <script type="text/javascript" src="js/geosvg.panzoom.js"></script>
+    <script type="text/javascript" src="js/geosvg.layers.js"></script>
+    <script type="text/javascript" src="js/geosvg.viewbox.js"></script>
     <script type="text/javascript" src="js/geosvg.import.js"></script>
+    <script type="text/javascript" src="js/tools.js"></script>
     <script type="text/javascript" src="js/index.js"></script>
+    <script type="text/javascript" src="js/geosvg.panzoom.js"></script>
+    <script type="text/javascript" src="js/tools.layerList.js"></script>
   </head>
   <body>
-    <div id="sidebar" hidden>Nothing here yet...
-    </div>
-    <div id="toolbar">
-      <div class="sidebar">
-        <button id="collections"><i class="material-icons">collections</i></button>
-        <button id="asset"><i class="material-icons">place</i></button>
-        <button id="addPoint"><i class="material-icons">add_location</i></button>
-      </div>
-      <!-- <button><i class="material-icons">show_chart</i></button>
-      <button><i class="material-icons">not_listed_location</i></button> -->
-    </div>
-    <div id="main">
-      <svg id="geosvg" width="100%" height="100%" >
+    <aside id="sidebar" hidden>
+      <section id="layerBrowser" hidden>
+        <header>
+          <h1 class="activateLayer" data-layer="assets">Layers</h1>
+          <ul class="breadcrumbs" id="layerBreadcrumbs"></ul>
+          <button class="floating" id="newLayer"><i class="material-icons">add</i></button>
+        </header>
+        <div class="content">
+          <ul id="layerList"></ul>
+        </div>
+      </section>
+      <section id="settings" hidden>
+        <header>
+          <h1>Settings</h1>
+        </header>
+      </section>
+      <section id="assetCreator" hidden>Asset Creator</section>
+    </aside>
+    <nav id="toolbar">
+      <section class="sidebar">
+        <button name="tool" value="layerBrowser" class="active"><i class="material-icons">collections</i></button>
+      </section>
+    </nav>
+
+    <main id="main">
+      <svg id="geo" width="100%" height="100%" >
       </svg>
-  </div>
+    </main>
+
+    <aside id="overlay" hidden>
+      <section id="createLayer" hidden>
+        <header>
+          <button name="back"><i class="material-icons">close</i></button>
+        </header>
+        <div class="error"></div>
+        <input type="text" placeholder="Enter name of layer..."/>
+        <footer>
+          <button name="back">Cancel</button>
+          <button name="submit">Create</button>
+        </footer>
+      </section>
+    </aside>
+
   </body>
 </html>

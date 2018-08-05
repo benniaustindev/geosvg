@@ -10,18 +10,16 @@
     });
   };
   const loadAssets=function(){
-    for(var collectionName in this.collections){
-      if(this.collections[collectionName].visible){
-        this.collections[collectionName].find({
-          '$and':[
-            {'north':{'$gt':this.center.destinationPoint(this.height*1.5,180).lat}},
-            {'south':{'$lt':this.center.destinationPoint(this.height*1.5,0).lat}},
-            {'west':{'$lt':this.center.destinationPoint(this.width*1.5,90).lon}},
-            {'east':{'$gt':this.center.destinationPoint(this.width*1.5,270).lon}},
-          ]
-        }).forEach(asset=>this.placeAsset(asset));
-      }
-    }
+    //use new nested databases
+    let searchArray=[
+      {'north':{'$gt':this.center.destinationPoint(this.height*1.5,180).lat}},
+      {'south':{'$lt':this.center.destinationPoint(this.height*1.5,0).lat}},
+      {'west':{'$lt':this.center.destinationPoint(this.width*1.5,90).lon}},
+      {'east':{'$gt':this.center.destinationPoint(this.width*1.5,270).lon}},
+    ];
+    this.assets.find({
+      '$and':searchArray
+    }).forEach(asset=>this.placeAsset(asset));
     removeAssets.call(this);
   };
   const createAssetElement=function(asset){
@@ -36,35 +34,35 @@
     },
     placeAsset(asset){
       let collectionName=asset.collection||'assets';
-      let element=this.element.querySelector('g[data-collection="'+asset.collection+'"]')
-      if(element){
+      //let element=this.element.querySelector('g[data-collection="'+asset.collection+'"]')
+      //if(element){
         let img= this.element.querySelector('image[href="'+asset.href+'"]'),
-        nw=new LatLon(asset.north,asset.west),
-        size=nw.planeDifference(new LatLon(asset.south,asset.east)),
-        position=this.center.planeDifference(nw);
+            nw=new LatLon(asset.north,asset.west),
+            size=nw.planeDifference(new LatLon(asset.south,asset.east)),
+            position=this.center.planeDifference(nw);
         if(!img){
           img=document.createSVGElement('image');
           ['href','north','south','west','east'].forEach(prop =>  img.setAttribute(prop,asset[prop]));
-          element.appendChild(img);
+          this.element.appendChild(img);
         }
         img.setAttribute('width',size.x);
         img.setAttribute('height',size.y);
         img.setAttribute('x',position.x);
         img.setAttribute('y',position.y);
-      }
+      //}
     }
   }
 
-  Object.defineProperties(viewPort,{
-    'scale':{
-      get:function(){
-        return properties.scale;
+    Object.defineProperties(viewPort,{
+      'scale':{
+        get:function(){
+          return properties.scale;
+        },
+        set:function(scale){
+          properties.scale=scale;
+          this.fixViewBox();
+        }
       },
-      set:function(scale){
-        properties.scale=scale;
-        this.fixViewBox();
-      }
-    },
     'lat':{
       get:function(){
         return properties.lat;

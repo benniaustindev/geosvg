@@ -1,68 +1,60 @@
-body {
-  position:relative;
-  width:100%;
-  height:100%;
-  margin:0;
-}
-#sidebar {
-  position:absolute;
-  top:3rem;
-  left:0;
-  bottom:0;
-  width:20rem;
-  background:#eee;
-  transition:all 300ms;
-}
-#sidebar[hidden]{
-  transform:translateX(-100%);
-  display:flex;
-}
-#sidebar[hidden] ~ #main{
-  left:0;
-}
-#toolbar {
-  position:absolute;
-  top:0;
-  left:0;
-  right:0;
-  height:3rem;
-  display:flex;
-  background:#999
-}
-#toolbar button {
-  outline:0;
-  flex-grow:0;
-  height:3rem;
-  line-height:3rem;
-  text-align:center;
-  min-width:3rem;
-  border:0;
-  background-color:transparent;
-}
-#toolbar button.active {
-  background:#eee;
-}
-#toolbar .sidebar {
+/***********/
+/* toolbar */
+/***********/
+
+#toolbar section.sidebar {
   display:flex;
   width:9rem;
-  transition:all 200ms;
-  transition-delay:0ms;
+  transition:all 300ms;
 }
-#sidebar:not([hidden]) ~ #toolbar .sidebar {
-  width:20rem;
-  transition-delay:100ms;
-}
-#toolbar .sidebar button  {
+#toolbar section.sidebar button  {
   flex-grow:1;
 }
-#main {
-  transition:all 300ms;
-  position:absolute;
-  top:3rem;
-  left:20rem;
-  right:0;
-  bottom:0;
+#sidebar:not([hidden]) ~ #toolbar section.sidebar {
+  width:20rem;
+}
 
+/***********/
+/* sidebar */
+/***********/
+
+#sidebar header ul.breadcrumbs {
 }
-#geosvg {
+#sidebar header ul.breadcrumbs li{
+  padding-top:.5rem;
 }
+#sidebar header ul.breadcrumbs li {
+  display:block;
+}
+#sidebar ul li {
+  display:flex;
+  padding:.5rem 0;
+}
+#sidebar ul i {
+  flex-grow:0;
+  line-height:1rem;
+  vertical-align:text-top;
+  cursor:pointer;
+}
+#sidebar ul a {
+  margin:0 .5rem;
+  flex-grow:1;
+  cursor:pointer;
+}
+#sidebar ul li.visible i.visibility_off,
+#sidebar ul li.hidden i.visibility_on {
+  display:none;
+}
+#sidebar ul li.hidden i.visibility_off,
+#sidebar ul li.hidden .activateLayer{
+  opacity:.5;
+}
+
+/***********/
+/* overlay */
+/***********/
+
+
+/***********/
+/* main ****/
+/***********/

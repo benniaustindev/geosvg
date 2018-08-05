@@ -1,6 +1,7 @@
-document.addEventListener('DOMContentLoaded',function(){
-  document.removeEventListener( "DOMContentLoaded", arguments.callee, false);
-  window.geosvg=new GeoSvg(document.getElementById('geosvg'));
+  const geosvg=new GeoSvg();
+
+  geosvg.addEventListener('ready',function(){
+    geosvg.element=document.getElementById('geo')
 
 
   function parseFileName(fileName){
@@ -8,7 +9,7 @@ document.addEventListener('DOMContentLoaded',function(){
         coordset=coordset[coordset.length-1].split(',');
     return obj={
       type:'image',
-      collection:'Downtown Orthography',
+      layer:'assets.Saint Paul.Orthography',
       href:fileName,
       north:coordset[0]*1,
       west:coordset[1]*1,
@@ -18,6 +19,8 @@ document.addEventListener('DOMContentLoaded',function(){
   }
   var lats=[];
   var lons=[];
+
+
   files.forEach(path=>{
     fileOptions=parseFileName(path)
     lats.push(fileOptions.north)
@@ -31,5 +34,4 @@ document.addEventListener('DOMContentLoaded',function(){
     lat:44.94291074016926,
     lon:-93.09441367328247,
   }
-  geosvg.showCollection('Downtown Orthography');
-})
+});
