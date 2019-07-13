@@ -28,6 +28,7 @@
 
 
   var initializers=[];
+  var readyMethods=[];
   var properties={
     lat:0,
     lon:0,
@@ -50,22 +51,25 @@
     }
   }
   class GeoSvg {
-    constructor(element){
+    constructor(elementId){
       this.db=new loki('loki.json');
-      this.assets=this.db.addCollection('assets');
+        this.assets=this.db.addCollection('assets');
       this.activeLayer='assets.Saint Paul';
-      this.element=properties.element=element;
       window.addEventListener('resize',()=>this.fixViewBox);
       while(initializers.length){
         let initializer=initializers.shift();
         initializer.call(this);
       }
       if(document.readyState=='compete'){
+        this.element=document.getElementById(elementId)
+        while(readyMethods.length)readyMethods.shift().call(this)
         this.dispatchEvent('ready');
         this.readyState='complete';
       }
       else {
         document.addEventListener('DOMContentLoaded',event=>{
+          this.element=document.getElementById(elementId)
+          while(readyMethods.length)readyMethods.shift().call(this)
           this.dispatchEvent('ready');
           this.readyState='complete';
         });
@@ -103,8 +107,11 @@
       }
 
     }
-
+    static ready(method){
+      readyMethods.push(method)
+    }
   }
+
   GeoSvg.extend=function(obj){
     let proto=Object.getPrototypeOf(this);
 

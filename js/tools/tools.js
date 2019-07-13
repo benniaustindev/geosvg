@@ -52,16 +52,14 @@
         tools.geosvg=this;
         initialized=true;
         storedTools.forEach((arr)=>{
-          new Tool(tools,...arr)
-          tools[arr[0]].geosvg=this
+          new Tool(tools,...arr);
+          tools[arr[0]].geosvg=this;
         })
         Array.from(document.getElementsByName('tool')).forEach(button=>{
-          button.addEventListener('click',(event)=>{
-            let toolName=button.getAttribute('value');
-            this.tools.toggleTool(toolName);
-          });
+          button.addEventListener('click',(event)=>this.tools.toggleTool(button.getAttribute('value')));
         })
         let activeButton=document.querySelector('button[name="tool"].active');
+
         if(activeButton){
           this.activeTool=activeButton.getAttribute('value');
           this.tools.activateTool(activeButton.getAttribute('value'));
@@ -73,12 +71,8 @@
   })
 
   GeoSvg.addTool=function(name,obj){
-    if(initialized){
-      new Tool(tools,name,obj)
-    }
-    else {
-      storedTools.push([...arguments])
-    }
+    if(initialized) new Tool(tools,name,obj);
+    else storedTools.push([...arguments]);
   }
 
 })();

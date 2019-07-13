@@ -1,20 +1,22 @@
 (function(){
+
+
   GeoSvg.addTool('layerBrowser',{
     constructor:function(){
-      document.getElementById('newLayer').addEventListener('click',event=>{
-        ui.overlay='createLayer';
-      });
-      document.getElementById('createLayer').addEventListener('hide',event=>{
+      const newLayer=document.getElementById('newLayer')
+      const createLayer=document.getElementById('createLayer')
+      const layerBrowser=document.getElementById('layerBrowser')
+
+      newLayer.addEventListener('click',event=>ui.overlay='createLayer');
+      createLayer.addEventListener('hide',event=>{
         event.srcElement.querySelector('input').value='';
         document.getElementById('createLayer').querySelector('.error').textContent='';
-      })
-      document.getElementById('createLayer').addEventListener('show',event=>{
-        event.srcElement.querySelector('input').focus();
       });
-      document.getElementById('createLayer').querySelector('button[name="submit"]').addEventListener('click',event=>{
-        let errorMessage = document.getElementById('createLayer').querySelector('.error')
-        let input=document.getElementById('createLayer').querySelector('input');
-        let newName=input.value
+      createLayer.addEventListener('show',event=>event.srcElement.querySelector('input').focus());
+      createLayer.querySelector('button[name="submit"]').addEventListener('click',event=>{
+        const errorMessage = createLayer.querySelector('.error');
+        const input=createLayer.querySelector('input');
+        const newName=input.value;
         if(newName.length==0){
           errorMessage.innerHTML='<i class="material-icons">warning</i> You must enter a name';
           input.focus();
@@ -24,51 +26,36 @@
           input.focus();
         }
         else {
-          let activeLayer=geosvg.layers.getLayer(geosvg.activeLayer)
-          let existing=Array.from(activeLayer.children).find((child)=>child.name==newName);
-
+          const activeLayer=geosvg.layers.getLayer(geosvg.activeLayer)
+          const existing=Array.from(activeLayer.children).find((child)=>child.name==newName);
           if(existing){
             errorMessage.innerHTML='<i class="material-icons">warning</i> A layer with that name already exists here';
             input.focus();
           }
           else {
-
-            activeLayer.createChild(newName)
-            history.back()
+            activeLayer.createChild(newName);
+            history.back();
           }
         }
       });
 
-
-      document.getElementById('layerBrowser').addEventListener('hide',function(event){
-        Array.from(document.querySelectorAll('button[name="tool"][value="layerBrowser"]')).forEach(button=>button.classList.remove('active'));
-      })
-      document.getElementById('layerBrowser').addEventListener('show',function(event){
-        Array.from(document.querySelectorAll('button[name="tool"][value="layerBrowser"]')).forEach(button=>button.classList.add('active'));
-      })
-      document.getElementById('layerBrowser').addEventListener('click',event=>{
-        if(event.srcElement.classList.contains('activateLayer')){
-          geosvg.activateLayer(event.srcElement.getAttribute('data-layer'));
-        }
-        else if(event.srcElement.classList.contains('visibility')){
-          console.log(event.srcElement)
-          let layer=geosvg.layers.getLayer(event.srcElement.getAttribute('data-layer'));
-          let visibility=layer.toggleVisibility();
-          event.srcElement.parentElement.classList.add(visibility);
-          if(visibility==='hidden'){
-            event.srcElement.parentElement.classList.remove('visible');
-          }
-          else {
-            event.srcElement.parentElement.classList.remove('hidden');
-          }
+      layerBrowser.addEventListener('hide',event=>Array.from(document.querySelectorAll('button[name="tool"][value="layerBrowser"]')).forEach(button=>button.classList.remove('active')));
+      layerBrowser.addEventListener('show',event=>Array.from(document.querySelectorAll('button[name="tool"][value="layerBrowser"]')).forEach(button=>button.classList.add('active')));
+      layerBrowser.addEventListener('click',event=>{
+        const {srcElement}=event;
+        const layerAddress=srcElement.getAttribute('data-layer');
+        if(srcElement.classList.contains('activateLayer')) geosvg.activateLayer(layerAddress);
+        else if(srcElement.classList.contains('visibility')){
+          const layer=geosvg.layers.getLayer(layerAddress);
+          const visibility=layer.toggleVisibility();
+          const listItem=srcElement.parentElement;
+          listItem.classList.add(visibility);
+          if(visibility==='hidden') listItem.classList.remove('visible');
+          else listItem.classList.remove('hidden');
         };
       });
-      geosvg.addEventListener('layerCreated',(evt)=>{
-        this.populateList();
-      });
-      geosvg.addEventListener('layerActivated',(evt)=>{
-        this.populateList();
-      });
+      geosvg.addEventListener('layerCreated',event=>this.populateList());
+      geosvg.addEventListener('layerActivated',event=>this.populateList());
     },
     activate:function(){
       ui.sidebar='layerBrowser';
@@ -79,7 +66,6 @@
     },
     populateList:function(){
       let activeLayer=this.geosvg.layers.getLayer(this.geosvg.activeLayer)
-      const breadcrumbs=document.getElementById('layerBreadcrumbs')
       const layerList=document.getElementById('layerList');
       breadcrumbs.innerHTML='';
       layerList.innerHTML='';

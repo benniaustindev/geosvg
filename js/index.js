@@ -1,7 +1,6 @@
-  const geosvg=new GeoSvg();
+const geosvg=new GeoSvg('geo');
 
-  geosvg.addEventListener('ready',function(){
-    geosvg.element=document.getElementById('geo')
+geosvg.addEventListener('ready',function(){
 
 
   function parseFileName(fileName){
@@ -9,8 +8,8 @@
         coordset=coordset[coordset.length-1].split(',');
     return obj={
       type:'image',
-      layer:'assets.Saint Paul.Orthography',
-      href:fileName,
+      layer:'Saint Paul.Orthography',
+      href:"assets/"+fileName,
       north:coordset[0]*1,
       west:coordset[1]*1,
       south:coordset[2]*1,
@@ -34,4 +33,7 @@
     lat:44.94291074016926,
     lon:-93.09441367328247,
   }
+
+  ui.createState('home')
+  ui.replaceState('home')
 });

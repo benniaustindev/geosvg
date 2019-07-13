@@ -1,0 +1,33 @@
+<!doctype>
+<html>
+  <head>
+    <title>Geosvg test page</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <script type="text/javascript" src="js/ui.states.js"></script>
+    <script type="text/javascript">
+
+          ui.createState('home',{
+            open:()=>console.log('open Home'),
+            close:()=>console.log('close Home'),
+          });
+
+      ui.createState('state1',{
+        open:()=>console.log('open state1'),
+        close:()=>console.log('close state1'),
+      });
+      ui.createState('state2',{
+        open:()=>console.log('open state2'),
+        close:()=>console.log('close state2'),
+      });
+      ui.replaceState('home');
+      ui.pushState('state1');
+      ui.pushState('state2');
+
+    </script>
+
+  </head>
+  <body>
+
+  </body>
+</html>

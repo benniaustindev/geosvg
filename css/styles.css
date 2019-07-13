@@ -17,11 +17,15 @@
 /***********/
 /* sidebar */
 /***********/
+#sidebar .activateLayer {
 
+  cursor:pointer;
+}
 #sidebar header ul.breadcrumbs {
 }
 #sidebar header ul.breadcrumbs li{
   padding-top:.5rem;
+  cursor:pointer;
 }
 #sidebar header ul.breadcrumbs li {
   display:block;
@@ -29,6 +33,7 @@
 #sidebar ul li {
   display:flex;
   padding:.5rem 0;
+  transition:all .25s;
 }
 #sidebar ul i {
   flex-grow:0;
@@ -39,21 +44,168 @@
 #sidebar ul a {
   margin:0 .5rem;
   flex-grow:1;
-  cursor:pointer;
+}
+#sidebar ul li i.visibility {
+  width:1.5rem;
+  transition:all .25s;
+}
+#sidebar ul li i.visibility_on {
+  margin-left:-1.5rem;
 }
 #sidebar ul li.visible i.visibility_off,
 #sidebar ul li.hidden i.visibility_on {
-  display:none;
+  opacity:0;
+
 }
-#sidebar ul li.hidden i.visibility_off,
-#sidebar ul li.hidden .activateLayer{
+#sidebar ul li.hidden,
+#sidebar ul li.hidden{
   opacity:.5;
+  font-weight:normal;
 }
 
 /***********/
 /* overlay */
 /***********/
+#layerList .row {
+  display:flex;
+  line-height:3rem;
+  position:relative;
+  overflow:hidden;
+  transition:all .25s;
+}
+#layerList li.newLayer .row {
+  padding-left:3rem;
+}
+#layerList ul.tree .row[hidden],
+#layerList ul.tree li[hidden] .row,
+#layerBrowser ul.tree .row + .row {
+  height:0;
+  display:flex;
+  padding-left:4rem;
+  padding-right:1rem;
+}
+#layerList .row > * {
+  flex-grow:1;
+}
+#layerList .row > button i {
+  transition:all .25s;
+}
+#layerList .row > button {
+  transition:all .25s;
+  line-height:inherit;
+  background-color:transparent;
+  border:0;
+  width:3rem;
+  color:inherit;
+  flex-grow:0;
+  position:relative;
+  z-index: 2;
+  overflow:hidden;
+}
+#layerList .row > button.expander {
+  z-index:0;
+}
+#layerList .row > label {
+  width:6rem;
+  flex-grow:0;
+}
+#layerList .row::before,
+#layerList .row::after {
+  content:'';
+  width:3rem;
+  height:100%;
+  background:#222;
+  color:#fff;
+  box-shadow:0 0 1rem 0 #000;
+  position:absolute;
+  top:0;
+  left:0;
+  z-index:1;
+}
+#layerList .row::after {
+  left:auto;
+  right:0;
+}
+#layerList .row > input {
+  height:2rem;
+  margin-top:.5rem;
+  flex-grow:1;
+  transition:all .25s;
+  border-radius:3px;
+  width:1px;
+}
+#layerList .row > input[type='color']{
+  padding: 0;
+  border: 0;
+  background-color: transparent;
+  margin: .25rem 00;
+  height: 2.5rem;
+}
+#layerList .row > .name:read-only {
+  color:#fff;
+  background:transparent;
+  box-shadow:0 0 0 0;
+  font-size:1.25rem;
+  padding-left:0;
+}
+#layerList ul.tree ul.tree ul.tree ul.tree li .row > button.add{
+  display:none;
+}
+#layerBrowser:not(.editMode) li .row > button.visibility.off,
+#layerBrowser:not(.editMode) li .row > button.visibility.off ~ .expander,
+#layerBrowser:not(.editMode) li .row > button.visibility.off ~ .name {
+  opacity:.4;
+}
+#layerBrowser:not(.deleteMode) li>.row~.row.confirmDelete,
+#layerBrowser.deleteMode li:not(.deleteRow)>.row,
+#layerBrowser.editMode li:not(.edit)>.row {
+  height:0;
+}
+#layerBrowser.deleteMode   li>.row .expander,
+#layerBrowser.editMode li>.row .expander {
+  margin-left:-3rem !important;
+  margin-right:1rem !important;
+}
+#layerBrowser.deleteMode   li>.row::before,
+#layerBrowser.deleteMode   li>.row .visibility{
+  margin-left:-3rem;
+}
 
+#layerList li[hidden] .row {
+  height:0;
+}
+#layerList.hideAfter li>.row::after {
+  margin-right:-3rem;
+}
+#layerList.hideBefore li>.row::before {
+  margin-left:-3rem;
+}
+
+#layerBrowser li>.row button[hidden] {
+  width:0;
+  display:block;
+}
+#layerBrowser.deleteMode li>.row::after,
+#layerBrowser.deleteMode li>.row .add,
+#layerBrowser.deleteMode li>.row .edit,
+  margin-right:-3rem;
+}
+#layerBrowser.deleteMode li.deleteRow>.row.deleteConfirm,
+#layerBrowser.editMode li.edit>.row~.row:not(.deleteConfirm) {
+  height:3rem;
+}
+#layerBrowser.editMode li.edit> .row.descriptionRow {
+  height:3.5rem;
+}
+#layerBrowser footer button {
+  backface-visibility:hidden;
+  transition:all 1s;
+  transform:rotateX(0);
+}
+#layerBrowser footer button[hidden] {
+  transform:rotateX(180deg);
+  display:inline-block;
+}
 
 /***********/
 /* main ****/

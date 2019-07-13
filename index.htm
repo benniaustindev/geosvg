@@ -4,34 +4,25 @@
     <title>Geosvg test page</title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
+
     <link type="text/css" rel="stylesheet" href="css/ui.css" />
     <link type="text/css" rel="stylesheet" href="css/styles.css" />
     <script type="text/javascript" src="js/ui.js"></script>
     <script type="text/javascript" src="assets/filenames.js"></script>
-    <script type="text/javascript" src="js/latlon-spherical.js"></script>
-    <script type="text/javascript" src="js/loki.js"></script>
+    <script type="text/javascript" src="js/ext/latlon-spherical.js"></script>
+    <script type="text/javascript" src="js/ext/loki.js"></script>
     <script type="text/javascript" src="js/geosvg.js"></script>
     <script type="text/javascript" src="js/geosvg.layers.js"></script>
     <script type="text/javascript" src="js/geosvg.viewbox.js"></script>
     <script type="text/javascript" src="js/geosvg.import.js"></script>
-    <script type="text/javascript" src="js/tools.js"></script>
-    <script type="text/javascript" src="js/index.js"></script>
     <script type="text/javascript" src="js/geosvg.panzoom.js"></script>
-    <script type="text/javascript" src="js/tools.layerList.js"></script>
+    <!-- <script type="text/javascript" src="js/tools/tools.js"></script> -->
+    <script type="text/javascript" src="js/tools/layerList.js"></script>
+    <script type="text/javascript" src="js/index.js"></script>
   </head>
   <body>
     <aside id="sidebar" hidden>
-      <section id="layerBrowser" hidden>
-        <header>
-          <h1 class="activateLayer" data-layer="assets">Layers</h1>
-          <ul class="breadcrumbs" id="layerBreadcrumbs"></ul>
-          <button class="floating" id="newLayer"><i class="material-icons">add</i></button>
-        </header>
-        <div class="content">
-          <ul id="layerList"></ul>
-        </div>
-      </section>
       <section id="settings" hidden>
         <header>
           <h1>Settings</h1>
@@ -39,10 +30,9 @@
       </section>
       <section id="assetCreator" hidden>Asset Creator</section>
     </aside>
+
     <nav id="toolbar">
-      <section class="sidebar">
-        <button name="tool" value="layerBrowser" class="active"><i class="material-icons">collections</i></button>
-      </section>
+      <button name="pushState" value="layerBrowser" class="active"><i class="fas fa-layer-group"></i></button>
     </nav>
 
     <main id="main">
@@ -51,15 +41,19 @@
     </main>
 
     <aside id="overlay" hidden>
-      <section id="createLayer" hidden>
+
+
+      <section id="layerBrowser" hidden>
         <header>
-          <button name="back"><i class="material-icons">close</i></button>
+          <h2><i class="fas fa-layer-group"></i> Layers</h2>
+          <button name="closeOverlay"><i class="fas fa-times"></i></button>
         </header>
+        <ul class="tree" id="layerList"></ul>
         <div class="error"></div>
-        <input type="text" placeholder="Enter name of layer..."/>
         <footer>
-          <button name="back">Cancel</button>
-          <button name="submit">Create</button>
+          <button name="submit" class="done" hidden>Done</button>
+          <button name="submit" class="save" hidden>Back</button>
+          <button name="other" class="delete" hidden>Delete Layer</button>
         </footer>
       </section>
     </aside>

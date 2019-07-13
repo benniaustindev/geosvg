@@ -1,7 +1,7 @@
 (function(){
   const Import={
     import(options){
-      this.layers.getLayer(options.layer)
+      this.layers.findLayer(options.layer)
       this.assets.insert(options);
     }
   }

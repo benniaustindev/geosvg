@@ -40,11 +40,14 @@
       lon:newCenter.lon,
     }
   }
-
-  geosvg.addEventListener('ready',function(){
-
-    geosvg.element.addEventListener('mousedown',mousedown);
-    geosvg.element.addEventListener('mousewheel',mousewheel);
+  GeoSvg.extend({
+    constructor(){
+      this.addEventListener('ready',(event)=>{
+        this.element.addEventListener('mousedown',mousedown);
+        this.element.addEventListener('mousewheel',mousewheel);
+      })
+    }
   })
+
 
 })();
